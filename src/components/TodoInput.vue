@@ -25,36 +25,32 @@
 import Modal from './common/Modal.vue'
 
 export default {
-    data: function() {
+    data() {
         return {
             newTodoItem: "",
             showModal: false
         }
     },
     methods: {
-        addTodo: function() {
+        addTodo() {
             if (this.newTodoItem !== '') {
-            // var obj = {completed: false, item: this.newTodoItem};
-            // localStorage.setItem(this.newTodoItem, JSON.stringify(obj));
-            // localStorage.setItem(this.newTodoItem, obj);
-            // obj를 그냥 넣을경우 값이 확인이 안됨.
-            //this <- 같은 인스턴스 접근 가능
             this.$emit('addTodoItem', this.newTodoItem);
             this.clearInput();
             } else {
                 this.showModal = !this.showModal;
             }
         },
-        clearInput: function() {
+        clearInput() {
             console.log("clearInput");
             this.newTodoItem = '';
         },
-        closeModalBtn: function() {
+        closeModalBtn() {
             this.showModal = !this.showModal;
         }
     },
     components: {
-        'Modal': Modal,
+        //속성명 축약
+        Modal,
     }
 }
 </script>
