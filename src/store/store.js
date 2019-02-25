@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as getters from './getters'
-import * as mutations from './mutations'
+import todoApp from './modules/todoApp'
 
 
 // vue 플러그인 사용
@@ -11,28 +10,9 @@ import * as mutations from './mutations'
 
 Vue.use(Vuex);
 
-// localStrage 관련 동작
-const storage = {
-    fetch() {
-        const arr = [];
-        // 인스턴스가 생성 되자마자 호출되는 라이프사이클 훅
-        // 생성되는 시점에 created의 logic이 호출됨
-        if (localStorage.length > 0) {
-            for (let i=0; i<localStorage.length; i++) {
-                if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-                    arr.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-                }
-            }
-        }
-        return arr;
-    }
-}
-
 // 다른 파일에서 접근 가능
 export const store = new Vuex.Store({
-    state: {
-        todoItems: storage.fetch()
-    },
-    getters,
-    mutations
+    modules: {
+        todoApp
+    }
 });
