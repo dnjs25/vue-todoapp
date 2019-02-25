@@ -1,12 +1,12 @@
 <template>
     <div>
         <transition-group name="list" tag="ul">
-            <li v-for="(todoItem, index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow list-item">
+            <li v-for="(todoItem, index) in this.storedTodoItems" v-bind:key="todoItem.item" class="shadow list-item">
                 <i class="fas fa-check checkBtn"
                     v-bind:class="{checkBtnCompleted: todoItem.completed}" 
-                    v-on:click="toggleComplete(todoItem, index)"></i>
+                    v-on:click="toggleComplete({todoItem, index})"></i>
                 <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
-                <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+                <span class="removeBtn" v-on:click="removeTodo({todoItem, index})">
                     <i class="fas fa-trash-alt"></i>
                 </span>
             </li>
@@ -15,15 +15,20 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
     methods: {
-        removeTodo(todoItem, index) {
-            this.$store.commit('removeOneItem', {todoItem, index});
-        },
-        toggleComplete(todoItem, index) {
-            this.$store.commit('toggleOneItem', {todoItem, index});
-        },
+        ...mapMutations({
+            // 인자를 선언하지 않아도 호출하는 단에 인자가 있으면 암묵적으로 넘겨짐
+            // 단, 인자의 개수가 여러개 일 경우 호출단에서 객체화 시켜줄 필요가 있음
+            removeTodo: 'removeOneItem',
+            toggleComplete: 'toggleOneItem',
+        }),
     },
+    computed: {
+        ...mapGetters(['storedTodoItems'])
+    }
 }
 </script>
 
